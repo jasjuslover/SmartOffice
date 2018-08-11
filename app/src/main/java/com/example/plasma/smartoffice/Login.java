@@ -36,18 +36,18 @@ public class Login extends AppCompatActivity {
   
     helper = new SessionHelper(Login.this);
   
-    Thread t = new Thread(new Runnable() {
-      @Override
-      public void run() {
-        helper.getSPFirtsStart();
+//    Thread t = new Thread(new Runnable() {
+//      @Override
+//      public void run() {
+        isFirstStart = helper.getSPFirtsStart();
       
         if (isFirstStart) {
           startActivity(new Intent(Login.this, SmartOfficeIntro.class));
           helper.saveSPBoolean(SessionHelper.ISFIRST_START, false);
         }
-      }
-    });
-    t.start();
+//      }
+//    });
+//    t.start();
     
     Glide.with(this).load(R.drawable.piksi).into(logoLogin);
     
