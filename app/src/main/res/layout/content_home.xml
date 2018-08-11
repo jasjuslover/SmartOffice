@@ -1,111 +1,296 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".Home"
-    tools:showIn="@layout/activity_home">
+    android:background="@color/gray"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorPrimary">
+
+        <ImageView
+            android:id="@+id/profile_photo"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="32dp" />
+
+        <TextView
+            android:id="@+id/txt_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profile_photo"
+            android:layout_marginTop="16dp"
+            android:text="Husni Kamal"
+            android:textAlignment="center"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/txt_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_name"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Android Developer - Polyglot Developer"
+            android:textAlignment="center"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="horizontal">
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/txt_icons"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lampu Satu"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp" />
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorPrimaryDark" />
-
-        <RadioGroup
-            android:id="@+id/rg_lampu_satu"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <RadioButton
-                android:id="@+id/rb_satu_nyala"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nyala" />
-
-            <RadioButton
-                android:id="@+id/rb_satu_mati"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mati" />
-        </RadioGroup>
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/bulb" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/txt_controller"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lampu Dua"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp" />
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorPrimaryDark" />
-
-        <RadioGroup
-            android:id="@+id/rg_lampu_dua"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <RadioButton
-                android:id="@+id/rb_dua_nyala"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nyala" />
-
-            <RadioButton
-                android:id="@+id/rb_dua_mati"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mati" />
-        </RadioGroup>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Lampu Tiga"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp" />
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorPrimaryDark" />
-
-        <RadioGroup
-            android:id="@+id/rg_lampu_tiga"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <RadioButton
-                android:id="@+id/rb_tiga_nyala"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nyala" />
-
-            <RadioButton
-                android:id="@+id/rb_tiga_mati"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mati" />
-        </RadioGroup>
+            android:text="Single Controller" />
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:layout_weight="1">
+
+            <com.github.ybq.android.spinkit.SpinKitView
+                android:id="@+id/spin_1"
+                style="@style/SpinKitView.Wave"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                app:SpinKit_Color="@color/colorPrimary" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/text_lamp_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Lampu 1"
+                        android:textAlignment="center" />
+
+                    <ImageView
+                        android:id="@+id/lamp_1"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_below="@id/text_lamp_1"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="@dimen/fab_margin" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:layout_weight="1">
+
+            <com.github.ybq.android.spinkit.SpinKitView
+                android:id="@+id/spin_2"
+                style="@style/SpinKitView.Wave"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                app:SpinKit_Color="@color/colorPrimary" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/text_lamp_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Lampu 2"
+                        android:textAlignment="center" />
+
+                    <ImageView
+                        android:id="@+id/lamp_2"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_below="@id/text_lamp_2"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="@dimen/fab_margin" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:layout_weight="1">
+
+            <com.github.ybq.android.spinkit.SpinKitView
+                android:id="@+id/spin_3"
+                style="@style/SpinKitView.Wave"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                app:SpinKit_Color="@color/colorPrimary" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/text_lamp_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Lampu 3"
+                        android:textAlignment="center" />
+
+                    <ImageView
+                        android:id="@+id/lamp_3"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_below="@id/text_lamp_3"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="@dimen/fab_margin" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txt_icons_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/all" />
+
+        <TextView
+            android:id="@+id/txt_controller_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="All Controller" />
+    </LinearLayout>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/lamp_all"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_margin="8dp" />
+
+            <TextView
+                android:id="@+id/text_all"
+                android:text="Tap the icon, to On/Off all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/lamp_all" />
+
+            <com.github.ybq.android.spinkit.SpinKitView
+                android:id="@+id/spin_all"
+                style="@style/SpinKitView.Wave"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
+                app:SpinKit_Color="@color/colorPrimary" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txt_icons_session"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/user" />
+
+        <TextView
+            android:id="@+id/txt_user_session"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Session" />
+    </LinearLayout>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/btn_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/tap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="Tap Here to Logout"
+            android:textAlignment="center" />
+    </android.support.v7.widget.CardView>
+</LinearLayout>

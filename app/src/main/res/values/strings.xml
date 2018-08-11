@@ -1,7 +1,12 @@
 <resources>
-    <string name="app_name">SmartOffice</string>
+    <string name="app_name">Smart Office</string>
     <string name="action_settings">Logout</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_home">Home</string>
     <string name="title_activity_main">MainActivity</string>
+
+    <!-- Icons FontAwesome -->
+    <string name="bulb">&#xf0eb;</string>
+    <string name="all">&#xf03a;</string>
+    <string name="user">&#xf007;</string>
 </resources>

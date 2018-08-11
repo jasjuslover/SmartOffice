@@ -1,56 +1,84 @@
 package com.example.plasma.smartoffice;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.example.plasma.smartoffice.helper.SessionHelper;
+import com.example.plasma.smartoffice.network.RetrofitHelper;
 import com.example.plasma.smartoffice.network.response.ParameterValue;
 import com.example.plasma.smartoffice.network.response.SetParamValue;
-import com.example.plasma.smartoffice.network.RetrofitHelper;
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-
-import java.util.ArrayList;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Home extends AppCompatActivity {
   
-  @BindView(R.id.rb_satu_nyala)
-  RadioButton rbSatuNyala;
-  @BindView(R.id.rb_satu_mati)
-  RadioButton rbSatuMati;
-  @BindView(R.id.rg_lampu_satu)
-  RadioGroup rgLampuSatu;
-  @BindView(R.id.rb_dua_nyala)
-  RadioButton rbDuaNyala;
-  @BindView(R.id.rb_dua_mati)
-  RadioButton rbDuaMati;
-  @BindView(R.id.rg_lampu_dua)
-  RadioGroup rgLampuDua;
-  @BindView(R.id.rb_tiga_nyala)
-  RadioButton rbTigaNyala;
-  @BindView(R.id.rb_tiga_mati)
-  RadioButton rbTigaMati;
-  @BindView(R.id.rg_lampu_tiga)
-  RadioGroup rgLampuTiga;
+  @BindView(R.id.spin_1)
+  SpinKitView spin1;
+  @BindView(R.id.lamp_1)
+  ImageView lamp1;
+  @BindView(R.id.spin_2)
+  SpinKitView spin2;
+  @BindView(R.id.lamp_2)
+  ImageView lamp2;
+  @BindView(R.id.spin_3)
+  SpinKitView spin3;
+  @BindView(R.id.lamp_3)
+  ImageView lamp3;
+  @BindView(R.id.profile_photo)
+  ImageView profilePhoto;
+  @BindView(R.id.txt_name)
+  TextView txtName;
+  @BindView(R.id.txt_status)
+  TextView txtStatus;
+  @BindView(R.id.txt_icons)
+  TextView txtIcons;
+  @BindView(R.id.txt_controller)
+  TextView txtController;
+  @BindView(R.id.text_lamp_1)
+  TextView textLamp1;
+  @BindView(R.id.text_lamp_2)
+  TextView textLamp2;
+  @BindView(R.id.text_lamp_3)
+  TextView textLamp3;
+  @BindView(R.id.txt_icons_all)
+  TextView txtIconsAll;
+  @BindView(R.id.txt_controller_all)
+  TextView txtControllerAll;
+  @BindView(R.id.lamp_all)
+  ImageView lampAll;
+  @BindView(R.id.text_all)
+  TextView textAll;
+  @BindView(R.id.spin_all)
+  SpinKitView spinAll;
+  @BindView(R.id.txt_icons_session)
+  TextView txtIconsSession;
+  @BindView(R.id.txt_user_session)
+  TextView txtUserSession;
+  @BindView(R.id.tap)
+  TextView tap;
+  @BindView(R.id.btn_logout)
+  CardView btnLogout;
   
-  boolean firstLamp, secondLamp, thirdLamp;
-  String perintah;
+  private boolean oneOn, twoOn, threeOn;
   
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -59,71 +87,88 @@ public class Home extends AppCompatActivity {
     ButterKnife.bind(this);
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
+    getSupportActionBar().hide();
+    
+    Glide.with(Home.this).load("https://husnikamal.com/wp-content/uploads/2017/04/cropped-boy-270x270.png").into(profilePhoto);
+    
+    Typeface fontAwesome = Typeface.createFromAsset(this.getAssets(), "FontAwesome.otf");
+    txtIcons.setTypeface(fontAwesome);
+    txtIconsAll.setTypeface(fontAwesome);
+    txtIconsSession.setTypeface(fontAwesome);
+    
+    Typeface libreFranklin = Typeface.createFromAsset(this.getAssets(), "LibreFranklin.ttf");
+    txtName.setTypeface(libreFranklin);
+    txtController.setTypeface(libreFranklin);
+    textLamp1.setTypeface(libreFranklin);
+    textLamp2.setTypeface(libreFranklin);
+    textLamp3.setTypeface(libreFranklin);
+    txtControllerAll.setTypeface(libreFranklin);
+    textAll.setTypeface(libreFranklin);
+    txtUserSession.setTypeface(libreFranklin);
+    tap.setTypeface(libreFranklin);
     
     getValueOne();
     getValueTwo();
     getValueThree();
-    
-    rgLampuSatu.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+  
+    if (oneOn && twoOn && threeOn) {
+      Glide.with(Home.this).load(R.drawable.on).into(lampAll);
+    } else {
+      Glide.with(Home.this).load(R.drawable.off).into(lampAll);
+    }
+  
+    btnLogout.setOnClickListener(new View.OnClickListener() {
       @Override
-      public void onCheckedChanged(RadioGroup group, int checkedId) {
-        if (rgLampuSatu.getCheckedRadioButtonId() == R.id.rb_satu_nyala) {
-          setValueOne("1");
-        } else if (rgLampuSatu.getCheckedRadioButtonId() == R.id.rb_satu_mati) {
-          setValueOne("0");
-        }
-      }
-    });
-    
-    rgLampuDua.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(RadioGroup group, int checkedId) {
-        if (rgLampuDua.getCheckedRadioButtonId() == R.id.rb_dua_nyala) {
-          setValueTwo("1");
-        } else if (rgLampuDua.getCheckedRadioButtonId() == R.id.rb_dua_mati) {
-          setValueTwo("0");
-        }
-      }
-    });
-    
-    rgLampuTiga.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(RadioGroup group, int checkedId) {
-        if (rgLampuTiga.getCheckedRadioButtonId() == R.id.rb_tiga_nyala) {
-          setValueThree("1");
-        } else if (rgLampuTiga.getCheckedRadioButtonId() == R.id.rb_tiga_mati) {
-          setValueThree("0");
-        }
+      public void onClick(View v) {
+        final SweetAlertDialog logout = new SweetAlertDialog(Home.this, SweetAlertDialog.WARNING_TYPE);
+        logout.setTitleText("Logout Confirmation")
+            .setConfirmText("Yes")
+            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+              @Override
+              public void onClick(SweetAlertDialog sweetAlertDialog) {
+                logout();
+              }
+            })
+            .setCancelText("No")
+            .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+              @Override
+              public void onClick(SweetAlertDialog sweetAlertDialog) {
+                sweetAlertDialog.dismiss();
+              }
+            }).show();
       }
     });
   }
   
   private void getValueOne() {
-    final SweetAlertDialog load = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-    load.setTitleText("Refreshing..")
-        .setCancelable(false);
-    load.show();
+    spin1.setVisibility(View.VISIBLE);
+    lamp1.setVisibility(View.INVISIBLE);
     RetrofitHelper.getSmartOfficeService().getParameterValue("qu5FVRoThCYGinP5", BuildConfig.EIOT_AUTH).enqueue(new Callback<ParameterValue>() {
       @Override
       public void onResponse(Call<ParameterValue> call, Response<ParameterValue> response) {
         if (response.body() != null) {
-          load.dismiss();
+          spin1.setVisibility(View.GONE);
+          spinAll.setVisibility(View.GONE);
+          lamp1.setVisibility(View.VISIBLE);
+          
           ParameterValue parameterValue = response.body();
+          oneOn = parameterValue.getValue().equalsIgnoreCase("1");
+          
           if (parameterValue.getValue().equalsIgnoreCase("1")) {
-            firstLamp = true;
-            rbSatuNyala.setChecked(firstLamp);
-            rbSatuMati.setChecked(!firstLamp);
+            Glide.with(Home.this).load(R.drawable.on).into(lamp1);
           } else if (parameterValue.getValue().equalsIgnoreCase("0")) {
-            firstLamp = false;
-            rbSatuNyala.setChecked(firstLamp);
-            rbSatuMati.setChecked(!firstLamp);
+            Glide.with(Home.this).load(R.drawable.off).into(lamp1);
           }
+          
+          validation();
         }
       }
       
       @Override
       public void onFailure(Call<ParameterValue> call, Throwable t) {
-        load.dismiss();
+        spin1.setVisibility(View.GONE);
+        spinAll.setVisibility(View.GONE);
+        lamp1.setVisibility(View.VISIBLE);
       }
     });
   }
@@ -143,31 +188,34 @@ public class Home extends AppCompatActivity {
   }
   
   private void getValueTwo() {
-    final SweetAlertDialog load = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-    load.setTitleText("Refreshing..")
-        .setCancelable(false);
-    load.show();
+    spin2.setVisibility(View.VISIBLE);
+    lamp2.setVisibility(View.INVISIBLE);
     RetrofitHelper.getSmartOfficeService().getParameterValue("rh1eNVcyZpn8mIvv", BuildConfig.EIOT_AUTH).enqueue(new Callback<ParameterValue>() {
       @Override
       public void onResponse(Call<ParameterValue> call, Response<ParameterValue> response) {
         if (response.body() != null) {
-          load.dismiss();
+          spin2.setVisibility(View.GONE);
+          spinAll.setVisibility(View.GONE);
+          lamp2.setVisibility(View.VISIBLE)
+          ;
           ParameterValue parameterValue = response.body();
+          twoOn = parameterValue.getValue().equalsIgnoreCase("1");
+          
           if (parameterValue.getValue().equalsIgnoreCase("1")) {
-            secondLamp = true;
-            rbDuaNyala.setChecked(secondLamp);
-            rbDuaMati.setChecked(!secondLamp);
+            Glide.with(Home.this).load(R.drawable.on).into(lamp2);
           } else if (parameterValue.getValue().equalsIgnoreCase("0")) {
-            secondLamp = false;
-            rbDuaNyala.setChecked(secondLamp);
-            rbDuaMati.setChecked(!secondLamp);
+            Glide.with(Home.this).load(R.drawable.off).into(lamp2);
           }
+          
+          validation();
         }
       }
       
       @Override
       public void onFailure(Call<ParameterValue> call, Throwable t) {
-        load.dismiss();
+        spin2.setVisibility(View.GONE);
+        spinAll.setVisibility(View.GONE);
+        lamp2.setVisibility(View.VISIBLE);
       }
     });
   }
@@ -187,31 +235,34 @@ public class Home extends AppCompatActivity {
   }
   
   private void getValueThree() {
-    final SweetAlertDialog load = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-    load.setTitleText("Refreshing..")
-        .setCancelable(false);
-    load.show();
+    spin3.setVisibility(View.VISIBLE);
+    lamp3.setVisibility(View.INVISIBLE);
     RetrofitHelper.getSmartOfficeService().getParameterValue("AEyf4grzMgiLufC9", BuildConfig.EIOT_AUTH).enqueue(new Callback<ParameterValue>() {
       @Override
       public void onResponse(Call<ParameterValue> call, Response<ParameterValue> response) {
         if (response.body() != null) {
-          load.dismiss();
+          spin3.setVisibility(View.GONE);
+          spinAll.setVisibility(View.GONE);
+          lamp3.setVisibility(View.VISIBLE);
+          
           ParameterValue parameterValue = response.body();
+          threeOn = parameterValue.getValue().equalsIgnoreCase("1");
+          
           if (parameterValue.getValue().equalsIgnoreCase("1")) {
-            thirdLamp = true;
-            rbTigaNyala.setChecked(thirdLamp);
-            rbTigaMati.setChecked(!thirdLamp);
+            Glide.with(Home.this).load(R.drawable.on).into(lamp3);
           } else if (parameterValue.getValue().equalsIgnoreCase("0")) {
-            thirdLamp = false;
-            rbTigaNyala.setChecked(thirdLamp);
-            rbTigaMati.setChecked(!thirdLamp);
+            Glide.with(Home.this).load(R.drawable.off).into(lamp3);
           }
+          
+          validation();
         }
       }
       
       @Override
       public void onFailure(Call<ParameterValue> call, Throwable t) {
-        load.dismiss();
+        spin3.setVisibility(View.GONE);
+        spinAll.setVisibility(View.GONE);
+        lamp3.setVisibility(View.VISIBLE);
       }
     });
   }
@@ -228,70 +279,6 @@ public class Home extends AppCompatActivity {
         Log.e("Huwiw", "" + t);
       }
     });
-  }
-  
-  private void promptSpeechInput() {
-    Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,
-        Locale.getDefault());
-    intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
-        "Say something!");
-    try {
-      startActivityForResult(intent, 100);
-    } catch (ActivityNotFoundException a) {
-      Toast.makeText(this, "" + a.getMessage(), Toast.LENGTH_SHORT).show();
-    }
-  }
-  
-  @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    switch (requestCode) {
-      case 100: {
-        if (resultCode == RESULT_OK && null != data) {
-          ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-          perintah = result.get(0);
-          Log.d("Perintah", "" + perintah);
-          switch (perintah) {
-            case "lampu satu nyala":
-              setValueOne("1");
-              break;
-            case "lampu dua nyala":
-              setValueTwo("1");
-              break;
-            case "lampu tiga nyala":
-              setValueThree("1");
-              break;
-            case "lampu satu mati":
-              setValueOne("0");
-              break;
-            case "lampu dua mati":
-              setValueTwo("0");
-              break;
-            case "lampu tiga mati":
-              setValueThree("0");
-              break;
-          }
-
-//          if (perintah.equalsIgnoreCase("Lampu Satu Nyala")) {
-//            setValueOne("1");
-//          } else if (perintah.equalsIgnoreCase("Lampu Satu Mati")) {
-//            setValueOne("0");
-//          } else if (perintah.equalsIgnoreCase("Lampu Dua Nyala")) {
-//            setValueTwo("1");
-//          } else if (perintah.equalsIgnoreCase("Lampu Dua Mati")) {
-//            setValueTwo("0");
-//          } else if (perintah.equalsIgnoreCase("Lampu Tiga Nyala")) {
-//            setValueThree("1");
-//          } else if (perintah.equalsIgnoreCase("Lampu Tiga Mati")) {
-//            setValueThree("0");
-//          }
-        }
-        break;
-      }
-    }
   }
   
   @Override
@@ -322,8 +309,6 @@ public class Home extends AppCompatActivity {
               }
             }).show();
         return true;
-      case R.id.speech:
-        promptSpeechInput();
       default:
         return super.onOptionsItemSelected(item);
     }
@@ -331,6 +316,64 @@ public class Home extends AppCompatActivity {
   
   private void logout() {
     startActivity(new Intent(Home.this, Login.class));
+    SessionHelper helper = new SessionHelper(Home.this);
+    helper.saveSPBoolean(SessionHelper.LOGGED_IN, false);
     finish();
+  }
+  
+  @OnClick({R.id.lamp_1, R.id.lamp_2, R.id.lamp_3})
+  public void onClick(View view) {
+    switch (view.getId()) {
+      case R.id.lamp_1:
+        if (oneOn) {
+          setValueOne("0");
+          return;
+        }
+        setValueOne("1");
+        break;
+      case R.id.lamp_2:
+        if (twoOn) {
+          setValueTwo("0");
+          return;
+        }
+        setValueTwo("1");
+        break;
+      case R.id.lamp_3:
+        if (threeOn) {
+          setValueThree("0");
+          return;
+        }
+        setValueThree("1");
+        break;
+    }
+  }
+  
+  @OnClick(R.id.lamp_all)
+  public void onClick() {
+    spinAll.setVisibility(View.VISIBLE);
+    
+    if (!oneOn && !twoOn && !threeOn) {
+      setValueOne("1");
+      setValueTwo("1");
+      setValueThree("1");
+    } else if (!oneOn || !twoOn || !threeOn) {
+      setValueOne("1");
+      setValueTwo("1");
+      setValueThree("1");
+    } else if (oneOn && twoOn && threeOn){
+      setValueOne("0");
+      setValueTwo("0");
+      setValueThree("0");
+    }
+  }
+  
+  private void validation() {
+    if (oneOn && twoOn && threeOn) {
+      Glide.with(Home.this).load(R.drawable.on).into(lampAll);
+      spinAll.setVisibility(View.GONE);
+    } else {
+      Glide.with(Home.this).load(R.drawable.off).into(lampAll);
+      spinAll.setVisibility(View.GONE);
+    }
   }
 }
