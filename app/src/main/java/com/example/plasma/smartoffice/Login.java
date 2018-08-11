@@ -33,16 +33,14 @@ public class Login extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
     ButterKnife.bind(this);
-    
-    Glide.with(this).load(R.drawable.piksi).into(logoLogin);
-    
+  
     helper = new SessionHelper(Login.this);
-    
+  
     Thread t = new Thread(new Runnable() {
       @Override
       public void run() {
         helper.getSPFirtsStart();
-        
+      
         if (isFirstStart) {
           startActivity(new Intent(Login.this, SmartOfficeIntro.class));
           helper.saveSPBoolean(SessionHelper.ISFIRST_START, false);
@@ -50,6 +48,13 @@ public class Login extends AppCompatActivity {
       }
     });
     t.start();
+    
+    Glide.with(this).load(R.drawable.piksi).into(logoLogin);
+    
+    if (helper.getSPSudahLogin()) {
+      startActivity(new Intent(this, Home.class));
+      finish();
+    }
   }
   
   @OnClick(R.id.btn_login)
@@ -59,6 +64,7 @@ public class Login extends AppCompatActivity {
     if (isSecretKeyTrue) {
       btnLogin.setProgress(100);
       startActivity(new Intent(this, Home.class));
+      helper.saveSPBoolean(SessionHelper.LOGGED_IN, true);
       finish();
     } else {
       Toast.makeText(this, "Wrong Secret Key!", Toast.LENGTH_SHORT).show();
