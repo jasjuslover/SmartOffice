@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".Home"
+    tools:showIn="@layout/activity_home">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lampu Satu"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimaryDark" />
+
+        <RadioGroup
+            android:id="@+id/rg_lampu_satu"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/rb_satu_nyala"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nyala" />
+
+            <RadioButton
+                android:id="@+id/rb_satu_mati"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mati" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lampu Dua"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimaryDark" />
+
+        <RadioGroup
+            android:id="@+id/rg_lampu_dua"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/rb_dua_nyala"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nyala" />
+
+            <RadioButton
+                android:id="@+id/rb_dua_mati"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mati" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lampu Tiga"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimaryDark" />
+
+        <RadioGroup
+            android:id="@+id/rg_lampu_tiga"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/rb_tiga_nyala"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nyala" />
+
+            <RadioButton
+                android:id="@+id/rb_tiga_mati"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mati" />
+        </RadioGroup>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
